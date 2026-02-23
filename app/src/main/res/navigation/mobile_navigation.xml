@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="iut.projet.hochet.ui.gallery.GalleryFragment"
+        android:name="iut.projet.hochet.ui.device.DeviceFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 

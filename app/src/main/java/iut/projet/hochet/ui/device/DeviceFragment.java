@@ -1,4 +1,4 @@
-package iut.projet.hochet.ui.gallery;
+package iut.projet.hochet.ui.device;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,14 +12,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import iut.projet.hochet.databinding.FragmentGalleryBinding;
 
-public class GalleryFragment extends Fragment {
+public class DeviceFragment extends Fragment {
 
     private FragmentGalleryBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        GalleryViewModel galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
+        DeviceViewModel galleryViewModel =
+                new ViewModelProvider(this).get(DeviceViewModel.class);
 
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
