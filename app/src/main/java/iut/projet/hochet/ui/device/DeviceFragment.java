@@ -32,7 +32,7 @@ public class DeviceFragment extends Fragment implements Observer {
     private final HashMap<String, View> composants = new HashMap<>();
 
     private String device = "not connected";
-    private String mode = "unkwown";
+    private String mode = "ouais";
     // ...
 
     public View onCreateView(@NonNull LayoutInflater inflater,
