@@ -75,10 +75,10 @@ public class DeviceFragment extends Fragment implements Observer {
 
         ((TextView) composants.get("mode")).setText("mode : " + mode);
         ((TextView) composants.get("etat")).setText(etat);
-        ((TextView) composants.get("DischargeLimit")).setText(dischargeLimit);
-        ((TextView) composants.get("Capacity")).setText(capacity);
-        ((TextView) composants.get("ChargeRate")).setText(chargeRate);
-        ((TextView) composants.get("level")).setText(level);
+        ((TextView) composants.get("DischargeLimit")).setText(dischargeLimit + "%");
+        ((TextView) composants.get("Capacity")).setText(capacity + "kwh");
+        ((TextView) composants.get("ChargeRate")).setText(chargeRate + "kw");
+        ((TextView) composants.get("level")).setText(level + "%");
 
 
     }
