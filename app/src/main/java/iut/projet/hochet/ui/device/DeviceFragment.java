@@ -1,37 +1,101 @@
 package iut.projet.hochet.ui.device;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
-import iut.projet.hochet.databinding.FragmentGalleryBinding;
+import iut.projet.hochet.MainActivity;
+import iut.projet.hochet.databinding.FragmentDeviceBinding;
 
-public class DeviceFragment extends Fragment {
+import iut.projet.hochet.ENode;
 
-    private FragmentGalleryBinding binding;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import androidx.lifecycle.Observer;
+
+public class DeviceFragment extends Fragment implements Observer {
+
+    private FragmentDeviceBinding binding;
+
+    private final HashMap<String, View> composants = new HashMap<>();
+
+    private String device = "not connected";
+    private String mode = "unkwown";
+    // ...
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DeviceViewModel galleryViewModel =
-                new ViewModelProvider(this).get(DeviceViewModel.class);
 
-        binding = FragmentGalleryBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
 
-        final TextView textView = binding.textGallery;
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+        binding = FragmentDeviceBinding.inflate(inflater, container, false);
+
+        View view = binding.getRoot();
+
+        composants.put("mode", binding.mode);
+        composants.put("level", binding.level);
+        // ...
+
+        Log.d("DeviceFragment", "registering observer");
+        ((MainActivity) getActivity()).enode.addObserver(this);
+
+        return view;
+    }
+
+    private void refreshUI() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar()
+                    .setTitle("DEVICE : " + device);
+        }
+
+        // ...
+
+        ((TextView) composants.get("mode")).setText("mode : " + mode);
+
+    }
+
+    private void processDatas(){
+        JSONObject datas = ENode.datas;
+        Log.d("DeviceFragment","datas : " + datas);
+        if (datas != null) {
+            try {
+                // model
+                JSONObject jsonDeviceInformation = datas.getJSONObject("information");
+                if (!jsonDeviceInformation.isNull("siteName"))
+                    device = jsonDeviceInformation.getString("siteName");
+                // config
+                JSONObject jsonDeviceConfig = datas.getJSONObject("config");
+                if (!jsonDeviceConfig.isNull("operationMode"))
+                    mode = jsonDeviceConfig.getString("operationMode");
+                // device state
+                // ...
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onChanged(Object o) {
+        processDatas();
+        refreshUI();
     }
 }
