@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#EDEDED">
 
-    <!-- Titre -->
+
     <TextView
         android:id="@+id/etat"
         android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- Cercle de progression -->
+
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/circularProgress"
         android:layout_width="220dp"
@@ -38,7 +38,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="40dp"/>
 
-    <!-- Pourcentage au centre -->
+
     <TextView
         android:id="@+id/level"
         android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
         app:layout_constraintStart_toStartOf="@id/circularProgress"
         app:layout_constraintEnd_toEndOf="@id/circularProgress"/>
 
-    <!-- Infos batterie -->
+
     <TextView
         android:id="@+id/Capacity"
         android:layout_width="wrap_content"

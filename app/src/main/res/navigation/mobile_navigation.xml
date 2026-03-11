@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="iut.projet.hochet.ui.home.HomeFragment"
-        android:label="@string/menu_home"
+        android:name="iut.projet.hochet.ui.device.DeviceFragment"
+        android:label="home"
         tools:layout="@layout/fragment_device" />
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="iut.projet.hochet.ui.device.DeviceFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:name="iut.projet.hochet.ui.control.ControlFragment"
+        android:label="modify"
+        tools:layout="@layout/fragment_modify" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="iut.projet.hochet.ui.slideshow.SlideshowFragment"
+        android:name="iut.projet.hochet.ui.devices.DevicesFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_devices" />
 </navigation>

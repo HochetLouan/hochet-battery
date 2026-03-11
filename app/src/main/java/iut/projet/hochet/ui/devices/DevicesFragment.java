@@ -1,4 +1,4 @@
-package iut.projet.hochet.ui.slideshow;
+package iut.projet.hochet.ui.devices;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,18 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import iut.projet.hochet.databinding.FragmentSlideshowBinding;
+import iut.projet.hochet.databinding.FragmentDevicesBinding;
 
-public class SlideshowFragment extends Fragment {
+public class DevicesFragment extends Fragment {
 
-    private FragmentSlideshowBinding binding;
+    private FragmentDevicesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SlideshowViewModel slideshowViewModel =
-                new ViewModelProvider(this).get(SlideshowViewModel.class);
+        DevicesViewModel slideshowViewModel =
+                new ViewModelProvider(this).get(DevicesViewModel.class);
 
-        binding = FragmentSlideshowBinding.inflate(inflater, container, false);
+        binding = FragmentDevicesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textSlideshow;

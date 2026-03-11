@@ -18,22 +18,27 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <Button
+            android:id="@+id/selfReliance"
             style="@style/MenuButtonStyle"
             android:text="SELF RELIANCE"/>
 
         <Button
+            android:id="@+id/timeUse"
             style="@style/MenuButtonStyle"
             android:text="TIME OF USE"/>
 
         <Button
+            android:id="@+id/importFocus"
             style="@style/MenuButtonStyle"
             android:text="IMPORT FOCUS"/>
 
         <Button
+            android:id="@+id/exportFocus"
             style="@style/MenuButtonStyle"
             android:text="EXPORT FOCUS"/>
 
         <Button
+            android:id="@+id/iddle"
             style="@style/MenuButtonStyle"
             android:text="IDDLE"/>
 

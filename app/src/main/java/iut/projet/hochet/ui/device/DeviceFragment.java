@@ -34,7 +34,7 @@ public class DeviceFragment extends Fragment implements Observer {
     private final HashMap<String, View> composants = new HashMap<>();
 
     private String device = "not connected";
-    private String mode = "ouais";
+    private String mode = "";
     private String etat = "";
     private String dischargeLimit = "";
     private String chargeRate = "";

@@ -25,12 +25,12 @@ public class ENode {
     // curl https://oauth.sandbox.enode.io/oauth2/token -X POST
     // -u BBB:AAA
     // -d "grant_type=client_credentials"
-    private static final String DEVICE_ID = "dd5113bf-fa1a-4c28-8d92-46b666789db0";
-    private static final String USER_ID = "5b3ac0c1-9c73-42cb-ac62-1c740065bf47";
-    private static final String USER_SECRET_KEY = "66f2dbc1453d74bffa8e823c63bbaf58a56bae1d";
-    public static final String ENODE_AUTH_URL = "https://oauth.sandbox.enode.io/oauth2/token";
-    public static final String ENODE_SANDBOX_URL =
-            "https://enode-api.sandbox.enode.io/batteries/"+DEVICE_ID;
+    private static final String BATTERY_ID = "dd5113bf-fa1a-4c28-8d92-46b666789db0";
+    private static final String CLIENT_ID = "5b3ac0c1-9c73-42cb-ac62-1c740065bf47";
+    private static final String CLIENT_SECRET = "218fa2b32225c45b994f68a28a3422a128fcedd2";
+    public static final String ENODE_URL_AUTH = "https://oauth.sandbox.enode.io/oauth2/token";
+    public static final String ENODE_URL =
+            "https://enode-api.sandbox.enode.io/batteries/"+BATTERY_ID;
     public static String ENODE_ACCESS_TOKEN = "";
 
     private static RequestQueue requestQueue;
@@ -67,7 +67,7 @@ public class ENode {
     public void requestToken() {
         Log.d("ENode","requesting token");
         // Création de la requête POST : différent de la méthode GET (encodage des paramètres en base 64)
-        StringRequest postRequest = new StringRequest(Request.Method.POST, ENODE_AUTH_URL,
+        StringRequest postRequest = new StringRequest(Request.Method.POST, ENODE_URL_AUTH,
                 response -> {
                     try {
                         ENODE_ACCESS_TOKEN = new JSONObject(response).getString("access_token");
@@ -90,7 +90,7 @@ public class ENode {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
-                String credentials = USER_ID+":"+USER_SECRET_KEY;
+                String credentials = CLIENT_ID+":"+CLIENT_SECRET;
                 try {
                     // Encodage en Base64 des identifiants
                     String base64Credentials = Base64.encodeToString(credentials.getBytes("UTF-8"),
@@ -113,7 +113,7 @@ public class ENode {
     public void fetchDatas() {
         Log.d("ENode","fetching datas");
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                ENode.ENODE_SANDBOX_URL, null,
+                ENode.ENODE_URL, null,
                 response -> {
                     Log.d("ENode","datas received : " + response);
                     datas = response;
@@ -131,6 +131,43 @@ public class ENode {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + ENode.ENODE_ACCESS_TOKEN);
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+
+        requestQueue.add(request);
+    }
+    public void setBatteryOperationMode(String operationMode) {
+        if (ENODE_ACCESS_TOKEN.isEmpty()) {
+            Log.e("ENode", "Access token is empty, cannot set operation mode.");
+            return;
+        }
+
+        // Endpoint selon le Swagger
+        String url = ENODE_URL + "/operation-mode";
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("operationMode", operationMode); // IMPORT_FOCUS, SELF_RELIANCE, etc.
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                url, jsonBody,
+                response -> {
+                    Log.d("ENode", "Operation mode set successfully: " + response);
+                },
+                error -> {
+                    Log.e("ENode", "Error setting operation mode: " + error.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + ENODE_ACCESS_TOKEN);
                 headers.put("Content-Type", "application/json");
                 return headers;
             }
