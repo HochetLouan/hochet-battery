@@ -59,8 +59,7 @@ public class DevicesFragment extends Fragment implements Observer<ENode> {
             Log.d("DevicesFragment", "Battery clicked: " + deviceId);
 
             ENode.selectedDeviceId = deviceId;
-
-            // récupérer les données de la batterie sélectionnée
+            //Pour eviter l'attente des 2 seconde lorsqu'on retourne vite dans la page d'info
             ((MainActivity) getActivity()).enode.fetchDatas();
         });
 
@@ -69,35 +68,24 @@ public class DevicesFragment extends Fragment implements Observer<ENode> {
 
     @Override
     public void onChanged(ENode eNode) {
-
         JSONArray list = ENode.batteriesList;
-
         if (list != null) {
-
             batteriesNames.clear();
             batteriesIds.clear();
-
             try {
-
                 for (int i = 0; i < list.length(); i++) {
-
                     JSONObject battery = list.getJSONObject(i);
                     String id = battery.getString("id");
-
                     String tempName = "Batterie " + (i + 1);
-
                     if (battery.has("information") && !battery.isNull("information")) {
                         tempName = battery
                                 .getJSONObject("information")
                                 .optString("siteName", tempName);
                     }
-
                     batteriesNames.add(tempName + " (" + id.substring(0, 8) + ")");
                     batteriesIds.add(id);
                 }
-
                 adapter.notifyDataSetChanged();
-
             } catch (JSONException e) {
                 Log.e("DevicesFragment", "Erreur lecture liste: " + e.getMessage());
             }

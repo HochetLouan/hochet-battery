@@ -20,6 +20,6 @@
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="iut.projet.hochet.ui.devices.DevicesFragment"
-        android:label="@string/menu_slideshow"
+        android:label="batteries"
         tools:layout="@layout/fragment_devices" />
 </navigation>

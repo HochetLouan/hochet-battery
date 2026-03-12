@@ -26,9 +26,8 @@ public class ENode {
     // curl https://oauth.sandbox.enode.io/oauth2/token -X POST
     // -u BBB:AAA
     // -d "grant_type=client_credentials"
-    private static final String BATTERY_ID = "dd5113bf-fa1a-4c28-8d92-46b666789db0";
-    private static final String CLIENT_ID = "5b3ac0c1-9c73-42cb-ac62-1c740065bf47";
-    private static final String CLIENT_SECRET = "218fa2b32225c45b994f68a28a3422a128fcedd2";
+    private static final String ID_USER = "5b3ac0c1-9c73-42cb-ac62-1c740065bf47";
+    private static final String SECRET_CLIENT = "218fa2b32225c45b994f68a28a3422a128fcedd2";
     public static final String ENODE_URL_AUTH = "https://oauth.sandbox.enode.io/oauth2/token";
     public static final String ENODE_URL =
             "https://enode-api.sandbox.enode.io/batteries/";
@@ -93,7 +92,7 @@ public class ENode {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
-                String credentials = CLIENT_ID+":"+CLIENT_SECRET;
+                String credentials = ID_USER+":"+SECRET_CLIENT;
                 try {
                     // Encodage en Base64 des identifiants
                     String base64Credentials = Base64.encodeToString(credentials.getBytes("UTF-8"),
@@ -147,12 +146,12 @@ public class ENode {
             return;
         }
 
-        // Endpoint selon le Swagger
+        //Endpoint
         String url = ENODE_URL + selectedDeviceId + "/operation-mode";
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("operationMode", operationMode); // IMPORT_FOCUS, SELF_RELIANCE, etc.
+            jsonBody.put("operationMode", operationMode);
         } catch (JSONException e) {
             e.printStackTrace();
             return;
@@ -184,7 +183,7 @@ public class ENode {
             Log.e("ENode", "Access token is empty, cannot fetch batteries.");
             return;
         }
-
+        //Un / après batteries mene vers la mauvaise route dans ENODE_URL
         String url = "https://enode-api.sandbox.enode.io/batteries?pageSize=50";
 
         JsonObjectRequest request = new JsonObjectRequest(
@@ -192,40 +191,28 @@ public class ENode {
                 url,
                 null,
                 response -> {
-
                     Log.d("ENode", "Batteries response: " + response);
-
                     try {
-
-                        // La liste est dans "data"
+                        //Recupere les batteries dans le JSON
                         batteriesList = response.getJSONArray("data");
-
                         Log.d("ENode", "Batteries found: " + batteriesList.length());
-
                         synchronized (this) {
                             liveData.setValue(this);
                         }
-
                     } catch (JSONException e) {
                         Log.e("ENode", "JSON parsing error: " + e.getMessage());
                     }
-
                 },
                 error -> Log.e("ENode", "Error fetching batteries: " + error.toString())
         ) {
-
             @Override
             public Map<String, String> getHeaders() {
-
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + ENODE_ACCESS_TOKEN);
                 headers.put("Content-Type", "application/json");
-
                 return headers;
             }
         };
-
         requestQueue.add(request);
     }
-
 }
